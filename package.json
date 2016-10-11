@@ -1,0 +1,21 @@
+{
+  "name": "beatcoin",
+  "version": "1.0.0",
+  "description": "Beatcoin",
+  "main": "truffle.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@smartcontracts.xyz:scs/beatcoin.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "zeppelin-solidity": "0.0.7"
+  }
+}
