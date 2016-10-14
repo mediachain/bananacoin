@@ -16,6 +16,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "zeppelin-solidity": "0.0.7"
+    "zeppelin-solidity": "0.0.8"
   }
 }
