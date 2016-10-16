@@ -1,7 +1,7 @@
 pragma solidity ^0.4.0;
 
 contract OracleInterface {
-  /* avoid using first enum(0) as it accidentally collides when map has no value(0) */
+  /* avoid using first enum(0) as it accidentally collides when a map has no value(0) for a given key */
   enum callbackTypes { _, requestSongWriter, requestNameSpace }
   mapping (bytes32 => callbackTypes) public callbacks;
 
