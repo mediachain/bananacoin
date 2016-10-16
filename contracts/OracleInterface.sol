@@ -1,26 +1,33 @@
 pragma solidity ^0.4.0;
 
 contract OracleInterface {
-  string host;
+  /* avoid using first enum(0) as it accidentally collides when map has no value(0) */
+  enum callbackTypes { _, requestSongWriter, requestNameSpace }
+  mapping (bytes32 => callbackTypes) public callbacks;
+
   event NameSpaceEvent(string result);
   event SongWriterEvent(string result);
+  event UnknownEvent(bytes32 requestID, string result);
 
-  function OracleInterface(string oraclizeHost){
+  function requestSongWriter(string _name){
+    bytes32 requestID = 0x1000000000000000000000000000000000000000000000000000000000000000; // Dummy ID
+    callbacks[requestID] = callbackTypes.requestSongWriter;
+    __callback(requestID, 'result 1');
   }
 
   function requestNameSpace(string _name){
-  }
-
-  function requestSongWriter(string _name){
-    bytes32 requestID = 1; // Dummy ID
-    __callback(requestID, '0x');
+    bytes32 requestID = 0x2000000000000000000000000000000000000000000000000000000000000000; // Dummy ID
+    callbacks[requestID] = callbackTypes.requestNameSpace;
+    __callback(requestID, 'result 2');
   }
 
   function __callback(bytes32 requestID, string result) {
-    if (true){ // dummy for now
+    if (callbacks[requestID] == callbackTypes.requestSongWriter){
       SongWriterEvent(result);
-    }else{
+    } else if (callbacks[requestID] == callbackTypes.requestNameSpace){
       NameSpaceEvent(result);
+    } else {
+      UnknownEvent(requestID, result);
     }
   }
 }
