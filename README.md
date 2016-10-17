@@ -19,3 +19,5 @@
 
 - startup testrpc in different tab
 - `truffle test`
+
+### TODO
