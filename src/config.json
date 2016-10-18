@@ -1,5 +1,6 @@
 {
 	"port": 8080,
 	"bodyLimit": "100kb",
+  "namespaceOwner": "0xc29b9e8d3c953097a7dc191159cd542d79ba0c49",
 	"corsHeaders": ["Link"]
 }
