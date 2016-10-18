@@ -2,7 +2,9 @@ import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+
 import initializeDb from './db';
+import initializeChain from './chain';
 import middleware from './middleware';
 import api from './api';
 import config from './config.json';
@@ -19,10 +21,12 @@ app.use(bodyParser.json({
 }));
 
 initializeDb(db => {
-  app.use(middleware({ config, db }));
-  app.use('/api', api({ config, db }));
-  app.server.listen(process.env.PORT || config.port);
-  console.log(`Started on port ${app.server.address().port}`);
+  initializeChain({config, db}, chain => {
+    app.use(middleware({ config, db }));
+    app.use('/api', api({ config, db }));
+    app.server.listen(process.env.PORT || config.port);
+    console.log(`Started on port ${app.server.address().port}`);
+  });
 });
 
 export default app;

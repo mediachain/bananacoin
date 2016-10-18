@@ -44,6 +44,11 @@ contract BeatCoin is CrowdsaleToken {
     }
   }
 
+  function test() {
+    TestEvent('hello world');
+  }
+
+  event TestEvent(string indexed song);
   event SongRegistered(string indexed song, address indexed artist, address indexed namespace, uint value);
   event SongPurchased(string indexed song, address indexed purchaser, address indexed artist, uint value);
   
