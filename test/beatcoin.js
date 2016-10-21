@@ -83,7 +83,6 @@ contract('BeatCoin', function(accounts) {
           token = _t;
           var ope = token.OrderPlaced();
           ope.watch(function(err, event) {
-            console.log('OrderPlaced', event.event);
             assert.equal(event.args.payer, holder);
             assert.equal(event.args.store, namespace);
             assert.equal(event.args.item, song);
@@ -92,7 +91,6 @@ contract('BeatCoin', function(accounts) {
           });
           var oce = token.OrderCompleted();
           oce.watch(function(err, event) {
-            console.log('OrderCompleted', event.event);
             assert.equal(event.args.payer, holder);
             assert.equal(event.args.store, namespace);
             assert.equal(event.args.item, song);
@@ -151,7 +149,6 @@ contract('BeatCoin', function(accounts) {
           token = _t;
           var ope = token.OrderPlaced();
           ope.watch(function(err, event) {
-            console.log('OrderPlaced', event.event);
             assert.equal(event.args.payer, holder);
             assert.equal(event.args.store, song);
             assert.equal(event.args.item, 'download');
@@ -160,7 +157,6 @@ contract('BeatCoin', function(accounts) {
           });
           var oce = token.OrderCompleted();
           oce.watch(function(err, event) {
-            console.log('OrderCompleted', event.event);
             assert.equal(event.args.payer, holder);
             assert.equal(event.args.store, song);
             assert.equal(event.args.item, 'download');
