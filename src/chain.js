@@ -7,9 +7,9 @@ export default ({config, db}, callback) => {
   var provider = new web3.providers.HttpProvider(config.ethRpcUrl);
   BeatCoin.setProvider(provider);
   var beatcoin = BeatCoin.deployed();
-  var sr = beatcoin.TestEvent();
+  var sr = beatcoin.OrderPlaced();
   sr.watch(() => {
-    console.log('TestEvent');
+    console.log('OrderPlaced');
   })
 	callback();
 }

@@ -17,18 +17,7 @@ contract BeatCoin is CrowdsaleToken, OrderPayment {
   uint public constant REGISTRATION_PRICE = 15000;
   uint public constant SONG_PRICE = 5000;
 
-  function placeDeposit(uint value) internal {
-    transfer(this, value);
-  }
-
-  function sendDeposit(Order order, address account) internal {
-    // this.tranfer makes the call external, making
-    // msg.sender == this inside transfer
-    this.transfer(account, order.value);
-  }
-
-  event OrderPlaced(address payer, string store, string item, uint value);
-  event OrderCompleted(address payer, string store, string item, uint value);
+  // public methods
 
   /*
    * registerSong
@@ -50,5 +39,18 @@ contract BeatCoin is CrowdsaleToken, OrderPayment {
    */
   function purchaseSong(string song) {
     placeOrder(song, 'download', SONG_PRICE);
+  }
+
+
+
+  // internal methods
+  function placeDeposit(uint value) internal {
+    transfer(this, value);
+  }
+
+  function sendDeposit(Order order, address account) internal {
+    // this.tranfer makes the call external, making
+    // msg.sender == this inside transfer
+    this.transfer(account, order.value);
   }
 }
