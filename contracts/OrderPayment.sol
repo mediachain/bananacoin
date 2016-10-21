@@ -33,7 +33,7 @@ contract OrderPayment {
     
     sendDeposit(order, account);
     
-    OrderPlaced(order.payer, store, item, order.value);
+    OrderCompleted(order.payer, store, item, order.value);
     delete orders[store][item];
   }
 

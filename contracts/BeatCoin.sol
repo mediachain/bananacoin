@@ -14,7 +14,7 @@ contract BeatCoin is CrowdsaleToken, OrderPayment {
   uint public constant decimals = 18;
 
   // BeatCoin specific constants
-  uint public constant REGISTRATION_PRICE = 15000;
+  uint public constant REGISTRATION_PRICE = 10000;
   uint public constant SONG_PRICE = 5000;
 
   // public methods
@@ -23,10 +23,10 @@ contract BeatCoin is CrowdsaleToken, OrderPayment {
    * registerSong
    * Register new song into a namespace
    *
-   * string song: song id
    * string namespace: namespace
+   * string song: song id
    */
-  function registerSong(string song, string namespace) {
+  function registerSong(string namespace, string song) {
     placeOrder(namespace, song, REGISTRATION_PRICE);
   }
 

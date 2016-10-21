@@ -27,4 +27,155 @@ contract('BeatCoin', function(accounts) {
     });
   });
 
+  var createFunded = function(holder) {
+    var token;
+    var deposit = 1000;
+    return BeatCoin.new()
+      .then(function(_t) {
+        token = _t;
+        return token.createTokens(holder, {from: holder, value: deposit})
+      })
+      .then(function() {
+        return token;
+      });
+    }
+
+  describe('registerSong', function(){
+    it("can register song", function(done) {
+      var token;
+      var holder = accounts[1];
+      var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
+      var namespace = 'mediachain';
+      var nsAccount = accounts[2];
+      var oracle = accounts[3];
+      createFunded(holder)
+        .then(function(_t) {
+          token = _t;
+          return token.registerSong(namespace, song, {from: holder})
+        })
+        .then(function() {
+          return token.completeOrder(namespace, song,
+                                     nsAccount, {from: oracle});
+        })
+        .then(function() {
+          return token.balanceOf(holder);
+        })
+        .then(function(balance) {
+          assert.equal(balance, 500000-10000)
+        })
+        .then(function() {
+          return token.balanceOf(nsAccount);
+        })
+        .then(function(balance) {
+          assert.equal(balance, 10000)
+        })
+        .then(done);
+    });
+    it("emits events on registration", function(done) {
+      var token;
+      var holder = accounts[1];
+      var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
+      var namespace = 'mediachain';
+      var nsAccount = accounts[2];
+      var oracle = accounts[3];
+      createFunded(holder)
+        .then(function(_t) {
+          token = _t;
+          var ope = token.OrderPlaced();
+          ope.watch(function(err, event) {
+            console.log('OrderPlaced', event.event);
+            assert.equal(event.args.payer, holder);
+            assert.equal(event.args.store, namespace);
+            assert.equal(event.args.item, song);
+            assert.equal(event.args.value, 10000);
+            ope.stopWatching();
+          });
+          var oce = token.OrderCompleted();
+          oce.watch(function(err, event) {
+            console.log('OrderCompleted', event.event);
+            assert.equal(event.args.payer, holder);
+            assert.equal(event.args.store, namespace);
+            assert.equal(event.args.item, song);
+            assert.equal(event.args.value, 10000);
+            oce.stopWatching();
+            done();
+          });
+
+          return token.registerSong(namespace, song, {from: holder})
+        })
+        .then(function() {
+          return token.completeOrder(namespace, song,
+                                     nsAccount, {from: oracle});
+        })
+    });
+  });
+
+  describe('purchaseSong', function(){
+    it("can purchase song", function(done) {
+      var token;
+      var holder = accounts[1];
+      var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
+      var artistAccount = accounts[2];
+      var oracle = accounts[3];
+      createFunded(holder)
+        .then(function(_t) {
+          token = _t;
+          return token.purchaseSong(song, {from: holder})
+        })
+        .then(function() {
+          return token.completeOrder(song, 'download',
+                                     artistAccount, {from: oracle});
+        })
+        .then(function() {
+          return token.balanceOf(holder);
+        })
+        .then(function(balance) {
+          assert.equal(balance, 500000-5000)
+        })
+        .then(function() {
+          return token.balanceOf(artistAccount);
+        })
+        .then(function(balance) {
+          assert.equal(balance, 5000)
+        })
+        .then(done);
+    });
+    it("emits events on purchase", function(done) {
+      var token;
+      var holder = accounts[1];
+      var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
+      var artistAccount = accounts[2];
+      var oracle = accounts[3];
+      createFunded(holder)
+        .then(function(_t) {
+          token = _t;
+          var ope = token.OrderPlaced();
+          ope.watch(function(err, event) {
+            console.log('OrderPlaced', event.event);
+            assert.equal(event.args.payer, holder);
+            assert.equal(event.args.store, song);
+            assert.equal(event.args.item, 'download');
+            assert.equal(event.args.value, 5000);
+            ope.stopWatching();
+          });
+          var oce = token.OrderCompleted();
+          oce.watch(function(err, event) {
+            console.log('OrderCompleted', event.event);
+            assert.equal(event.args.payer, holder);
+            assert.equal(event.args.store, song);
+            assert.equal(event.args.item, 'download');
+            assert.equal(event.args.value, 5000);
+            oce.stopWatching();
+            done();
+          });
+
+          return token.purchaseSong(song, {from: holder})
+        })
+        .then(function() {
+          return token.completeOrder(song, 'download',
+                                     artistAccount, {from: oracle});
+        })
+    });
+  });
+
 });
