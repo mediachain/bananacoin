@@ -16,6 +16,7 @@ contract BeatCoin is CrowdsaleToken {
   uint public constant REGISTRATION_PRICE = 15000;
   uint public constant SONG_PRICE = 5000;
 
+  // Order (deferred payment) data structure
   struct Order {
     address payer;
     uint value;
