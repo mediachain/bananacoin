@@ -35,10 +35,8 @@ export default ({ config, db }) => {
 
 	router.post('/register', function({ body }, res) {
 		body.id = uuid.v4();
-    body.active = true; // TODO: should start in false and
-                        // become true on SongRegistered
+    body.active = false;
 		songs.push(body);
-    body.payment = config.namespaceOwner;
 		res.json(body);
   });
 

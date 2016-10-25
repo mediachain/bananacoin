@@ -1,6 +1,7 @@
 {
 	"port": 8080,
 	"bodyLimit": "100kb",
+  "namespace": "mediachain",
   "namespaceOwner": "0xc29b9e8d3c953097a7dc191159cd542d79ba0c49",
 	"corsHeaders": ["Link"],
   "ethRpcURL": "http://localhost:8545"

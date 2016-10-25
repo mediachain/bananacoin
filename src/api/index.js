@@ -5,7 +5,7 @@ import songs from './songs';
 export default ({ config, db }) => {
 	let api = Router();
 
-	api.use('/mediachain/songs', songs({ config, db }));
+	api.use(`/${config.namespace}/songs`, songs({ config, db }));
 
 	api.get('/', (req, res) => {
 		res.json({ version });
