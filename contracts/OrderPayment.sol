@@ -38,7 +38,6 @@ contract OrderPayment {
   }
 
   function placeDeposit(uint value) internal;
-
   function sendDeposit(Order order, address account) internal;
 
   event OrderPlaced(address payer, string store, string item, uint value);

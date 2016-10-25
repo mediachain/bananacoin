@@ -46,7 +46,7 @@ export default ({config, db}, callback) => {
       console.log('call back with song', song.owner);
       var buyer = args.item;
       token.completeOrder(song.id, buyer,
-                          config.namespaceOwner, {from: account});
+                          song.owner, {from: account});
     }
   });
   oce.watch(function(err, event) {
