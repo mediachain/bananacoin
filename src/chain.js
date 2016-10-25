@@ -44,26 +44,39 @@ export default ({config, db}, callback) => {
       }
       var song = f[0];
       console.log('call back with song', song.owner);
+      var buyer = args.item;
+      token.completeOrder(song.id, buyer,
+                          config.namespaceOwner, {from: account});
     }
   });
   oce.watch(function(err, event) {
     console.log('OrderCompleted');
     var args = event.args;
     var store = args.store;
-    var songID = args.item;
     if (store === config.namespace) {
+      var songID = args.item;
       var f = songs.filter(song => song.id === songID);
       if (f.length === 0) {
-        console.log('Can\'t complete order for song with id', songID);
+        console.log('Can\'t complete register order for song with id', songID);
         return;
       }
       var song = f[0];
       song.owner = args.payer;
       song.active = true;
-      console.log(song);
+      console.log('new song!', song);
+      console.log('song #:', songs.length);
     } else {
+      var songID = store;
+      var f = songs.filter(song => song.id === songID);
+      if (f.length === 0) {
+        console.log('Can\'t complete purchase order for song with id', songID);
+        return;
+      }
+      var song = f[0];
+      song.purchasers.push(args.payer);
+      console.log('song', song.id, 'purchased by', args.payer);
+      console.log('purchasers:', song.purchasers);
     }
-    console.log('songs #:', songs.length);
   });
 	callback();
 }

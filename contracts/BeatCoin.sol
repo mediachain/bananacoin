@@ -37,8 +37,8 @@ contract BeatCoin is CrowdsaleToken, OrderPayment {
    *
    * string song: song id
    */
-  function purchaseSong(string song) {
-    placeOrder(song, 'download', SONG_PRICE);
+  function purchaseSong(string song, string buyer) {
+    placeOrder(song, buyer, SONG_PRICE);
   }
 
 

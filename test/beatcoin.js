@@ -118,10 +118,10 @@ contract('BeatCoin', function(accounts) {
       createFunded(holder)
         .then(function(_t) {
           token = _t;
-          return token.purchaseSong(song, {from: holder})
+          return token.purchaseSong(song, holder, {from: holder})
         })
         .then(function() {
-          return token.completeOrder(song, 'download',
+          return token.completeOrder(song, holder,
                                      artistAccount, {from: oracle});
         })
         .then(function() {
@@ -151,7 +151,7 @@ contract('BeatCoin', function(accounts) {
           ope.watch(function(err, event) {
             assert.equal(event.args.payer, holder);
             assert.equal(event.args.store, song);
-            assert.equal(event.args.item, 'download');
+            assert.equal(event.args.item, holder);
             assert.equal(event.args.value, 5000);
             ope.stopWatching();
           });
@@ -159,16 +159,16 @@ contract('BeatCoin', function(accounts) {
           oce.watch(function(err, event) {
             assert.equal(event.args.payer, holder);
             assert.equal(event.args.store, song);
-            assert.equal(event.args.item, 'download');
+            assert.equal(event.args.item, holder);
             assert.equal(event.args.value, 5000);
             oce.stopWatching();
             done();
           });
 
-          return token.purchaseSong(song, {from: holder})
+          return token.purchaseSong(song, holder, {from: holder})
         })
         .then(function() {
-          return token.completeOrder(song, 'download',
+          return token.completeOrder(song, holder,
                                      artistAccount, {from: oracle});
         })
     });

@@ -25,17 +25,21 @@ export default ({ config, db }) => {
 
   var displaySong = (s) => {
     delete s.url;
+    delete s.active;
     return s;
   }
 
   router.get('/', function({params}, res) {
-    songs.map(displaySong)
-		res.json(songs);
+    var f = songs.filter(song => song.active)
+    f = f.map(x => Object.assign({}, x))
+    f.map(displaySong);
+		res.json(f);
   });
 
 	router.post('/register', function({ body }, res) {
 		body.id = uuid.v4();
     body.active = false;
+    body.purchasers = [];
 		songs.push(body);
 		res.json(body);
   });

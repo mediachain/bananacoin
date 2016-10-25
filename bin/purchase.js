@@ -12,32 +12,26 @@ BeatCoin.setProvider(provider);
 var accounts = web3.eth.accounts;
 
 var token = BeatCoin.deployed();
-var artist = accounts[0];
+var fan = accounts[1];
 var deposit = 1e5;
     
-console.log(artist, 'will register a song');
+console.log(fan, 'will purchase a song');
 var options = {
-	method: 'POST',
-	uri: `http://localhost:8080/api/${config.namespace}/songs/register`,
-	body: {
-    name: "Song A",
-    owner: artist,
-    url: "https://example.com/a.mp3",
-	},
+	method: 'GET',
+	uri: `http://localhost:8080/api/${config.namespace}/songs/`,
 	json: true,
 };
 
-var song;
+var songs;
 request(options)
-	.then(function(_song) {
-    song = _song;
-    console.log(song);
-		return token.createTokens(artist, {from: artist, value: deposit})
+	.then(function(_songs) {
+    songs = _songs;
+		return token.createTokens(fan, {from: fan, value: deposit})
 	})
   .then(function() {
-    return token.registerSong
-      .sendTransaction('mediachain', song.id,
-       {from: artist, value: 0, gas: 1000000})
+    return token.purchaseSong
+      .sendTransaction(songs[0].id, fan,
+       {from: fan, value: 0, gas: 1000000})
   
   })
 	.then(console.log)

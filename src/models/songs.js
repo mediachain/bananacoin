@@ -7,6 +7,7 @@ const songs = [
     url: "https://example.com/yyz.mp3",
     id: "song-id-1",
     active: false,
+    purchasers: [],
   }
 
  
