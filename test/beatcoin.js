@@ -68,7 +68,7 @@ contract('BeatCoin', function(accounts) {
       .then(function() {
         return token;
       });
-    }
+  }
 
   describe('registerSong', function(){
     it("can register song", function(done) {
