@@ -25,6 +25,36 @@ contract('BeatCoin', function(accounts) {
         })
         .then(done);
     });
+
+    it.only("can check contract balance as invariant", function(done) {
+      var token, supply;
+      var holder = accounts[1];
+      var anotherHolder = accounts[2];
+      var deposit = 1e18;
+      BeatCoin.new()
+        .then(function(_t) {
+          token = _t;
+          return token.createTokens(holder, {from: holder, value: deposit})
+        })
+        .then(function() {
+          return token.createTokens(anotherHolder, {from: anotherHolder, value: deposit})
+        })
+        .then(function() {
+          return token.totalSupply.call();
+        })
+        .then(function(_s) {
+          supply = _s;
+          return token.getPrice()
+        })
+        .then(function(price) {
+          assert.equal(deposit * 2, web3.eth.getBalance(token.address))
+          return token.checkInvariant.call()
+        })
+        .then(function(result) {
+          assert.isTrue(result)
+        })
+        .then(done);
+    });
   });
 
   var createFunded = function(holder) {
