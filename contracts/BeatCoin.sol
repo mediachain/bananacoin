@@ -2,11 +2,12 @@ pragma solidity ^0.4.0;
 
 import "./CrowdsaleToken.sol";
 import "./OrderPayment.sol";
+import {Factory, Target} from "zeppelin/Bounty.sol";
 
 /*
  * Main BeatCoin Token contract
  */
-contract BeatCoin is CrowdsaleToken, OrderPayment {
+contract BeatCoin is CrowdsaleToken, OrderPayment, Target {
 
   // Standard Token public constants
   string public constant name = "BeatCoin";

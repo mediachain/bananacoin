@@ -31,7 +31,7 @@
     "resource-router-middleware": "^0.5.1",
     "uuid": "^2.0.3",
     "web3": "^0.16.0",
-    "zeppelin-solidity": "0.0.10"
+    "zeppelin-solidity": "0.0.11"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
