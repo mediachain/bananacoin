@@ -41,7 +41,9 @@ contract BeatCoin is CrowdsaleToken, OrderPayment {
     placeOrder(song, buyer, SONG_PRICE);
   }
 
-
+  function checkInvariant() returns (bool result){
+    return totalSupply == safeMul(PRICE, this.balance);
+  }
 
   // internal methods
   function placeDeposit(uint value) internal {
