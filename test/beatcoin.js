@@ -89,7 +89,50 @@ contract('BeatCoin', function(accounts) {
       });
   }
 
-  describe('oracle security', function(){
+  describe('security', function(){
+
+    it("only oracle can emergency stop", function(done) {
+      var token;
+      var holder = accounts[1];
+      var oracle = accounts[3];
+      createFunded(holder, oracle)
+        .then(function(_t) {
+          token = _t;
+          return token.emergencyStop({from: holder})
+        })
+        .catch(function(err) {
+          assert.isTrue(err.message.search('invalid JUMP') != -1);
+          done();
+        })
+    });
+
+    it("oracle can emergency stop", function(done) {
+      var token;
+      var holder = accounts[1];
+      var oracle = accounts[3];
+      createFunded(holder, oracle)
+        .then(function(_t) {
+          token = _t;
+          return token.emergencyStop({from: oracle})
+        })
+        .then(function(tx) {
+          return token.balanceOf(holder);
+        })
+        .then(function(balance) {
+          assert.equal(balance, 500000)
+        })
+        .then(function() {
+          return token.transfer(oracle, 3000);
+        })
+        .then(function(tx) {
+          return token.balanceOf(holder);
+        })
+        .then(function(balance) {
+          // balance shouldnt have changed
+          assert.equal(balance, 500000)
+        })
+        .then(done);
+    });
     it("only oracle can callback", function(done) {
       var token;
       var holder = accounts[1];
@@ -110,7 +153,7 @@ contract('BeatCoin', function(accounts) {
           return token.balanceOf(nsAccount);
         })
         .then(function(balance) {
-          // balance should be 0
+          // balance should be 0 because completeOrder shouldnt have worked
           assert.equal(balance, 0)
         })
         .then(done);
