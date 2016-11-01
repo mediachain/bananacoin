@@ -18,6 +18,9 @@ contract BeatCoin is CrowdsaleToken, OrderPayment, Target {
   uint public constant REGISTRATION_PRICE = 10000;
   uint public constant SONG_PRICE = 5000;
 
+  
+  function BeatCoin() OrderPayment() {}
+
   // public methods
 
   /*

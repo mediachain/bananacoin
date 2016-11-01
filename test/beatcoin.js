@@ -26,6 +26,21 @@ contract('BeatCoin', function(accounts) {
         .then(done);
     });
 
+    it("owned by oracle", function(done) {
+      var token;
+      var holder = accounts[1];
+      var oracle = accounts[3];
+      createFunded(holder, oracle)
+        .then(function(_t) {
+          token = _t;
+          return token.owner();
+        })
+        .then(function(owner) {
+          assert.equal(owner, oracle);
+        })
+        .then(done);
+    });
+
     it("can check contract balance as invariant", function(done) {
       var token, supply;
       var holder = accounts[1];
@@ -57,10 +72,14 @@ contract('BeatCoin', function(accounts) {
     });
   });
 
-  var createFunded = function(holder) {
+  var createFunded = function(holder, owner) {
     var token;
     var deposit = 1000;
-    return BeatCoin.new()
+    var options = {};
+    if (owner) {
+      options.from = owner;
+    }
+    return BeatCoin.new(options)
       .then(function(_t) {
         token = _t;
         return token.createTokens(holder, {from: holder, value: deposit})
@@ -70,6 +89,34 @@ contract('BeatCoin', function(accounts) {
       });
   }
 
+  describe('oracle security', function(){
+    it("only oracle can callback", function(done) {
+      var token;
+      var holder = accounts[1];
+      var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
+      var namespace = 'mediachain';
+      var nsAccount = accounts[2];
+      var oracle = accounts[3];
+      createFunded(holder, oracle)
+        .then(function(_t) {
+          token = _t;
+          return token.registerSong(namespace, song, {from: holder})
+        })
+        .then(function() {
+          return token.completeOrder(namespace, song,
+                                     nsAccount, {from: holder});
+        })
+        .then(function() {
+          return token.balanceOf(nsAccount);
+        })
+        .then(function(balance) {
+          // balance should be 0
+          assert.equal(balance, 0)
+        })
+        .then(done);
+    });
+  });
+
   describe('registerSong', function(){
     it("can register song", function(done) {
       var token;
@@ -78,7 +125,7 @@ contract('BeatCoin', function(accounts) {
       var namespace = 'mediachain';
       var nsAccount = accounts[2];
       var oracle = accounts[3];
-      createFunded(holder)
+      createFunded(holder, oracle)
         .then(function(_t) {
           token = _t;
           return token.registerSong(namespace, song, {from: holder})
@@ -87,7 +134,7 @@ contract('BeatCoin', function(accounts) {
           return token.completeOrder(namespace, song,
                                      nsAccount, {from: oracle});
         })
-        .then(function() {
+        .then(function(tx) {
           return token.balanceOf(holder);
         })
         .then(function(balance) {
@@ -114,7 +161,7 @@ contract('BeatCoin', function(accounts) {
       var namespace = 'mediachain';
       var nsAccount = accounts[2];
       var oracle = accounts[3];
-      createFunded(holder)
+      createFunded(holder, oracle)
         .then(function(_t) {
           token = _t;
           var ope = token.OrderPlaced();
@@ -151,7 +198,7 @@ contract('BeatCoin', function(accounts) {
       var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
       var artistAccount = accounts[2];
       var oracle = accounts[3];
-      createFunded(holder)
+      createFunded(holder, oracle)
         .then(function(_t) {
           token = _t;
           return token.purchaseSong(song, holder, {from: holder})
@@ -186,7 +233,7 @@ contract('BeatCoin', function(accounts) {
       var song = 'f30b5e64-a8a4-47af-99e2-f1e2aa97e569';
       var artistAccount = accounts[2];
       var oracle = accounts[3];
-      createFunded(holder)
+      createFunded(holder, oracle)
         .then(function(_t) {
           token = _t;
           var ope = token.OrderPlaced();

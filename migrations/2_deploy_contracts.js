@@ -4,5 +4,4 @@ module.exports = function(deployer) {
     return deployer.deploy(Bounty, BeatCoinFactory.address);
   });
   deployer.autolink();
-  deployer.deploy(OracleInterface);
 };
