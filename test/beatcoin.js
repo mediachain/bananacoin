@@ -46,6 +46,7 @@ contract('BeatCoin', function(accounts) {
       var holder = accounts[1];
       var anotherHolder = accounts[2];
       var deposit = 1e18;
+      var wallet;
       BeatCoin.new()
         .then(function(_t) {
           token = _t;
@@ -55,6 +56,10 @@ contract('BeatCoin', function(accounts) {
           return token.createTokens(anotherHolder, {from: anotherHolder, value: deposit})
         })
         .then(function() {
+          return token.wallet();
+        })
+        .then(function(_w) {
+          wallet = _w;
           return token.totalSupply.call();
         })
         .then(function(_s) {
@@ -62,7 +67,6 @@ contract('BeatCoin', function(accounts) {
           return token.getPrice()
         })
         .then(function(price) {
-          assert.equal(deposit * 2, web3.eth.getBalance(token.address))
           return token.checkInvariant.call()
         })
         .then(function(result) {

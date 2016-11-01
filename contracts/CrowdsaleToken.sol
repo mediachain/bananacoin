@@ -8,6 +8,13 @@ import "zeppelin/StandardToken.sol";
 contract CrowdsaleToken is StandardToken {
 
   uint PRICE = 500;
+  // Address to send ether from sale
+  address public wallet;
+
+  function CrowdsaleToken(address w) {
+    if (w == 0) throw;
+    wallet = w;
+  }
 
   function () payable {
     createTokens(msg.sender);
@@ -20,6 +27,8 @@ contract CrowdsaleToken is StandardToken {
 
     totalSupply = safeAdd(totalSupply, tokens);
     balances[recipient] = safeAdd(balances[recipient], tokens);
+
+    if (!wallet.send(msg.value)) throw;
   }
   
   function getPrice() constant returns (uint result){
