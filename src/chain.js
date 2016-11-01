@@ -13,7 +13,7 @@ export default ({config, db}, callback) => {
   var token = BeatCoin.deployed();
   var accounts = web3.eth.accounts;
   // TODO: set to secured oracle geth account
-  var account = accounts[9];
+  var account = accounts[0];
   var ope = token.OrderPlaced();
   var oce = token.OrderCompleted();
   

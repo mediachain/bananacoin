@@ -12,7 +12,7 @@ BeatCoin.setProvider(provider);
 var accounts = web3.eth.accounts;
 
 var token = BeatCoin.deployed();
-var fan = accounts[1];
+var fan = accounts[2];
 var deposit = 1e5;
     
 console.log(fan, 'will purchase a song');

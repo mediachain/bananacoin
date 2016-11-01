@@ -35,7 +35,6 @@ contract BeatCoin is CrowdsaleToken, OrderPayment, Target, Stoppable {
     placeOrder(namespace, song, REGISTRATION_PRICE);
   }
 
-
   /*
    * purchaseSong
    * Register new song into a namespace
