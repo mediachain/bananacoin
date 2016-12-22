@@ -1,6 +1,6 @@
 pragma solidity ^0.4.0;
 
-import "zeppelin/StandardToken.sol";
+import "zeppelin-solidity/contracts/StandardToken.sol";
 
 /*
  * Crowdsale Token contract

@@ -2,8 +2,8 @@ pragma solidity ^0.4.0;
 
 import "./CrowdsaleToken.sol";
 import "./OrderPayment.sol";
-import {Factory, Target} from "zeppelin/Bounty.sol";
-import "zeppelin/Stoppable.sol";
+import {Factory, Target} from "zeppelin-solidity/contracts/Bounty.sol";
+import "zeppelin-solidity/contracts/Stoppable.sol";
 
 /*
  * Main BeatCoin Token contract

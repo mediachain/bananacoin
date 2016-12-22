@@ -1,6 +1,6 @@
 pragma solidity ^0.4.0;
 
-import "zeppelin/Ownable.sol";
+import "zeppelin-solidity/contracts/Ownable.sol";
 
 /*
  * Order Payment contract helper
